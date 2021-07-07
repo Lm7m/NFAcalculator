@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	  <style>
+		  #element1 {display:inline-block; width:40%; padding:10px}
+#element2 {display:inline-block; width:40%; padding:10px}
+
+		  
+#de {
+color: antiquewhite;
+}
+		  
+		  #de:hover{
+			  color: black;
+			  }
+table {
+  border-collapse: separate;
+  width: 50%;
+	
+}
+
+th, td {
+  padding: 1px;
+  text-align: center;
+  border: 5px solid #fff5f5;
+}
+
+td:hover {
+	color: black;
+	background-color:#fff5f5;}
+</style>
+	  
+	  
+    <title>NFA cucluator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,700,800" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,700,800" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/style.css">
+
+  </head>
+  <body>
+    
+      
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">NFA calculater</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="oi oi-menu"></span> Menu
+      </button>
+        
+
+      <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item active"><a href="RG_NFA.html" class="nav-link">RG to NFA </a></li>
+          <li class="nav-item"><a href="NFA_RG.html" class="nav-link">NFA to RG</a></li>
+          <li class="nav-item"><a href="DOC.html" class="nav-link">Help & DOC </a></li>
+         
+    
+        </ul>
+      </div>
+    </div>
+  </nav>
+    <!-- END nav -->
+                <script>
+							
+	
+ function convert() {
+	      document.getElementById('table').innerHTML = '';
+    class MyClass {
+        constructor(f,t,b,e,t2,b2){
+         	this.from = f;
+         	this.to1 = t;
+            this.to2 = t2;
+			this.by1 = b;
+			this.by2= b2;
+        	this.e = e;}
+      
+    }
+
+     var input = document.getElementById("string").value;
+
+ //var  = 'A->aR R->bR|aS S->bT T->R|e';
+ 
+            var array = input.split(" ");
+            
+                        var gxs = [];
+                        
+  for (let i = 0;i <array.length; i++) {
+ if(array[i].length == 5){
+gxs[i] = new MyClass(array[i].charAt(0),array[i].charAt(4),array[i].charAt(3),null,null,null);
+ }
+ else if(array[i].length == 8){
+ gxs[i] = new MyClass(array[i].charAt(0),array[i].charAt(4),array[i].charAt(3),null,array[i].charAt(7),array[i].charAt(6))
+ }
+ else if(array[i].length == 6){
+ gxs[i] = new MyClass(array[i].charAt(0),array[i].charAt(3),array[i].charAt(5),array[i].charAt(5),null,null);
+ }
+        
+       }
+       
+        let events = [];
+    for (let j = 0;j <array.length; j++)    
+ for (let i = 0;i <array[j].length; i++) {
+ if(array[j].charAt(i) >= 'a' && array[j].charAt(i) <= 'z'){
+  events.push(array[j].charAt(i));
+ }
+ }
+       let eventsee = [];
+    for (let j = 0;j <array.length; j++)    
+ for (let i = 0;i <array[j].length; i++) {
+ if((array[j].charAt(i) >= 'a' && array[j].charAt(i) <= 'z')&&(array[j].charAt(i) != 'e' )){
+  eventsee.push(array[j].charAt(i));
+ }
+ }
+    let states = [];
+    for (let j = 0;j <array.length; j++)    
+ for (let i = 0;i <array[j].length; i++) {
+ if(array[j].charAt(i) >= 'A' && array[j].charAt(i) <= 'Z'){
+  states.push(array[j].charAt(i));
+ }
+ }
+ 
+   let final = [];
+    for (let j = 0;j <array.length; j++)    
+ for (let i = 0;i <array[j].length; i++) {
+ if(array[j].charAt(i) == 'e'){
+  final.push(array[j].charAt(0));
+ }
+ }
+            
+      		let state = new Set (states);
+            states = [...state];
+             
+             
+             
+         	let event1 = new Set (events);
+      		events = [...event1];
+            
+      		let event = new Set (eventsee);
+      		eventsee = [...event];
+    
+     
+    document.getElementById("de").innerHTML ="M = (Q,∑,δ,p0,F)"+"<br>"+"Q = {"+states+"}"+"<br>"+"∑ = {" +eventsee+"}"+"<br>"+"δ = Q x ∑e-> Pow(Q)"+"<br>"+"P0 = {"+states[0]+"}"+"<br>"+"F = {"+final+"}";
+
+    
+    const maxSize = Math.max(events.length, states.length);
+	var array = new Array(maxSize); 
+ 
+  
+// Loop to create 2D array using 1D array 
+
+for (var i = 0; i <= states.length ;i++) { 
+    array[i] = []; 
+} 
+
+
+for (var i = 0; i < array.length; i++) { 
+    for (var j = 0; j < states.length; j++) 
+    {array[i][j]="\xa0"; }}
+    
+    
+    
+for (var i = 1; i <= events.length; i++) { 
+array[0][i]=events[i-1];
+ }
+ 
+for (var i = 1; i <= maxSize; i++) { 
+array[i][0]=states[i-1];
+ }
+ 
+ 
+
+var index;
+
+for (var i = 0 ; i < states.length; i++) {
+ for (var j = 0; j < array.length; j++) {
+    if (gxs[i].from ==array[j][0]){
+    if (gxs[i].to2==null){
+    	index = events.indexOf(gxs[i].by1);
+        array[j][index+1]=gxs[i].to1;
+    }
+    else {
+    index = events.indexOf(gxs[i].by1);
+        array[j][index+1]=gxs[i].to1;
+    index = events.indexOf(gxs[i].by2);
+        array[j][index+1]=gxs[i].to2;
+    }
+    
+    }
+}}
+
+   
+    var table = document.getElementById("table");
+        
+           for(var i = 0; i < array.length; i++)
+           {
+               // create a new row
+               var newRow = table.insertRow(table.length);
+               for(var j = 0; j < array[i].length; j++)
+               {
+                   // create a new cell
+                   var cell = newRow.insertCell(j);
+                   
+                   // add value to the cell
+                   cell.innerHTML = array[i][j];
+               }
+           }
+
+
+    }
+
+function check(){
+	 
+    class MyClass {
+        constructor(f,t,b,e,t2,b2){
+         	this.from = f;
+         	this.to1 = t;
+            this.to2 = t2;
+			this.by1 = b;
+			this.by2= b2;
+        	this.e = e;}
+      
+    }
+
+     var input = document.getElementById("string").value;
+ //var  = 'A->aR R->bR|aS S->bT T->R|e';
+ 
+            var array = input.split(" ");
+            
+                        var gxs = [];
+                        
+  for (let i = 0;i <array.length; i++) {
+ if(array[i].length == 5){
+gxs[i] = new MyClass(array[i].charAt(0),array[i].charAt(4),array[i].charAt(3),null,null,null);
+ }
+ else if(array[i].length == 8){
+ gxs[i] = new MyClass(array[i].charAt(0),array[i].charAt(4),array[i].charAt(3),null,array[i].charAt(7),array[i].charAt(6))
+ }
+ else if(array[i].length == 6){
+ gxs[i] = new MyClass(array[i].charAt(0),array[i].charAt(3),array[i].charAt(5),array[i].charAt(5),null,null);
+ }
+        
+       }
+       
+        let events = [];
+    for (let j = 0;j <array.length; j++)    
+ for (let i = 0;i <array[j].length; i++) {
+ if(array[j].charAt(i) >= 'a' && array[j].charAt(i) <= 'z'){
+  events.push(array[j].charAt(i));
+ }
+ }
+       let eventsee = [];
+    for (let j = 0;j <array.length; j++)    
+ for (let i = 0;i <array[j].length; i++) {
+ if((array[j].charAt(i) >= 'a' && array[j].charAt(i) <= 'z')&&(array[j].charAt(i) != 'e' )){
+  eventsee.push(array[j].charAt(i));
+ }
+ }
+    let states = [];
+    for (let j = 0;j <array.length; j++)    
+ for (let i = 0;i <array[j].length; i++) {
+ if(array[j].charAt(i) >= 'A' && array[j].charAt(i) <= 'Z'){
+  states.push(array[j].charAt(i));
+ }
+ }
+ 
+   let final = [];
+    for (let j = 0;j <array.length; j++)    
+ for (let i = 0;i <array[j].length; i++) {
+ if(array[j].charAt(i) == 'e'){
+  final.push(array[j].charAt(0));
+ }
+ }
+            
+      		let state = new Set (states);
+            states = [...state];
+             
+             
+             
+         	let event1 = new Set (events);
+      		events = [...event1];
+            
+      		let event = new Set (eventsee);
+      		eventsee = [...event];
+    
+    
+    const maxSize = Math.max(events.length, states.length);
+	var array = new Array(maxSize); 
+ 
+  
+// Loop to create 2D array using 1D array 
+
+for (var i = 0; i <= states.length ;i++) { 
+    array[i] = []; 
+} 
+
+
+for (var i = 0; i < array.length; i++) { 
+    for (var j = 0; j < states.length; j++) 
+    {array[i][j]="\xa0"; }}
+    
+    
+    
+for (var i = 1; i <= events.length; i++) { 
+array[0][i]=events[i-1];
+ }
+ 
+for (var i = 1; i <= maxSize; i++) { 
+array[i][0]=states[i-1];
+ }
+ 
+
+var str = document.getElementById("str").value;
+	
+
+	
+var i = 0;
+var j = 0;
+var w = 0;
+	
+while( w<1){
+	var current = gxs[j].by1;
+if(str[i] == current){
+	
+	if((gxs[j].t2==null&&gxs[j].e==null)&&(gxs[j+1].from==gxs[j].t1)){
+	j=j+2;
+	i++;
+	}
+
+
+	else if(gxs[j].t2!=null&&gxs[j].e==null){
+		if(gxs[j].t2==gxs[j+1].from){
+			j++;
+			i++;
+		}
+		else if(gxs[j].t1==gxs[j].from){
+		j++;
+		i++;
+		}
+		
+	}
+	else if(current=='e'){
+document.getElementById("answer").innerHTML = "true";
+		w=2;}
+	else {
+document.getElementById("answer").innerHTML = "false";
+		w=2;}
+
+}
+else {
+document.getElementById("answer").innerHTML = "false";
+		w=2;
+}
+					
+	
+
+					
+}
+										
+}
+					
+					
+document.querySelector('.btn2').style.display = 'none'; 
+document.querySelector('.ss').style.display = 'none'; 
+document.querySelector('.btn1').addEventListener('click', showBtn); 
+ 
+function showBtn(e) { 
+ document.querySelector('.btn2').style.display = 'block'; 
+document.querySelector('.ss').style.display = 'block'; 
+ e.preventDefault(); 
+} 	
+
+	
+</script>
+
+    <!-- <div class="js-fullheight"> -->
+    <div class="hero-wrap js-fullheight">
+      <div class="overlay"></div>
+      <div id="particles-js"></div>
+    
+        <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-6 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+            <h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"> <strong>RG to NFA </strong> </h1>
+ 	     
+			  <input type="text" id="string" value="A->aR R->bR|aS S->bT T->R|e">
+
+<button  class ="btn1" onClick=convert()> convert </button>
+
+		</div>
+     			<div id="element1">
+		<table id="table" border="1"></table>
+			  </div>
+				<div id="element2">
+ 		<p id="de"></p>
+			  </div>
+
+	
+ <input class ="ss" type="text" id="str" value="abbe">
+	
+<button  class ="btn2" onClick=check()> check </button>
+			
+	<p id="answer"></p>
+	
+			  </div>
+		
+		
+		
+		
+	
+  <!-- loader -->
+			  
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/jquery.timepicker.min.js"></script>
+  <script src="js/particles.min.js"></script>
+  <script src="js/particle.js"></script>
+  <script src="js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="js/google-map.js"></script>
+  <script src="js/main.js"></script>
+    
+  </body>
+</html>
